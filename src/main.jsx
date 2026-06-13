@@ -111,8 +111,16 @@ const abilities = [
 ]
 
 const skills = [
-  'TapTap Maker', 'Vibe Coding', 'Cursor', 'ChatGPT / Gemini',
-  '玩法策划', '数值调试', 'Mod 开发', '数据站搭建', '社区运营', '视频剪辑',
+  { name: 'TapTap Maker', cat: 'gamedev' },
+  { name: '玩法策划', cat: 'gamedev' },
+  { name: '数值调试', cat: 'gamedev' },
+  { name: 'Vibe Coding', cat: 'ai' },
+  { name: 'Cursor', cat: 'ai' },
+  { name: 'ChatGPT / Gemini', cat: 'ai' },
+  { name: 'Mod 开发', cat: 'tech' },
+  { name: '数据站搭建', cat: 'tech' },
+  { name: '社区运营', cat: 'ops' },
+  { name: '视频剪辑', cat: 'ops' },
 ]
 
 const navItems = [
@@ -222,7 +230,7 @@ function HeroAvatar() {
       </div>
       <div className="floating-chip chip-4">
         <span className="chip-dot lilac" />
-        <span>玩法策划</span>
+        <span>数据站</span>
       </div>
     </motion.div>
   )
@@ -275,13 +283,13 @@ function Hero() {
     <section id="hero" className="hero section-full">
       <div className="hero-flow" />
       <div className="hero-tint" aria-hidden="true" />
-      <Aurora colors={['#818cf8', '#a78bfa', '#f472b6', '#e0e7ff']} amplitude={1.1} />
+      <Aurora colors={['#3b82f6', '#818cf8', '#dbeafe', '#fafaf9']} amplitude={1.1} />
       <Decor variant="hero" />
       <div className="hero-inner page-shell">
         <div className="hero-copy">
           <div className="status-badge">
             <span className="status-dot" />
-            <span>AI 游戏创作 / 游戏策划实习 · 在找</span>
+            {/* <span>2027届毕业生</span> */}
           </div>
 
           <h1 className="hero-title" style={{ minHeight: '136px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -299,6 +307,11 @@ function Hero() {
             </span>
           </h1>
 
+          <div className="hero-statement">
+            <span className="hero-statement-en">I MAKE PLAYABLE IDEAS.</span>
+            <span className="hero-statement-zh">把想法做成能玩的东西。</span>
+          </div>
+
           <div className="hero-desc">
             <span className="hero-quote">
               "将来只有两种人做游戏才有意义：0.0001% 组成极精锐团队、做前所未有之物的人才；和 99% 满足自己想法的业余爱好者。"
@@ -307,10 +320,10 @@ function Hero() {
           </div>
 
           <div className="hero-stickers">
-            <div className="sticker-tag tag-game"><Gamepad2 size={14} /> 游戏玩家</div>
-            <div className="sticker-tag tag-code"><Code size={14} /> Vibe Coding</div>
-            <div className="sticker-tag tag-ship"><Rocket size={14} /> 做过能上线的东西</div>
-            <div className="sticker-tag tag-video"><Video size={14} /> 会剪视频做内容</div>
+            <div className="sticker-tag tag-game"><span className="tag-index">01</span> 游戏玩家</div>
+            <div className="sticker-tag tag-code"><span className="tag-index">02</span> Vibe Coding</div>
+            <div className="sticker-tag tag-ship"><span className="tag-index">03</span> 做过能上线的东西</div>
+            <div className="sticker-tag tag-video"><span className="tag-index">04</span> 会剪视频做内容</div>
           </div>
 
           <div className="hero-actions">
@@ -331,8 +344,13 @@ function Works() {
     <section id="works" className="works">
       <Decor variant="works" />
       <div className="works-head page-shell">
-        <p className="eyebrow"><Compass size={16} /> FEATURED WORKS</p>
-        <h2 className="section-title">我做过的东西</h2>
+        <div className="works-head-title-bar">
+          <div>
+            <p className="eyebrow"><Compass size={16} /> FEATURED WORKS</p>
+            <h2 className="section-title">我做过的东西</h2>
+          </div>
+          <div className="dot-matrix-patch" />
+        </div>
         <p className="works-sub">用作品说话：每一次动手，都是为了解决一个真实的体验痛点。</p>
       </div>
       
@@ -346,6 +364,8 @@ function Works() {
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
+            {/* Giant background number watermark */}
+            <div className="work-row-watermark" aria-hidden="true">{w.index}</div>
             {/* 左侧：媒体展示框 (实机视频/浏览器 Mockup) */}
             <div className="work-editorial-media">
               {w.media && w.media.type === 'video' ? (
@@ -367,27 +387,32 @@ function Works() {
               )}
             </div>
 
-            {/* 右侧：结构化信息 */}
+            {/* 右侧：结构化项目档案 */}
             <div className="work-editorial-info">
-              {/* 高亮数据标牌 */}
-              <div>
-                <div className="work-badge-float">
-                  <span className="work-badge-val">{w.metric.value}</span>
-                  <span className="work-badge-lbl">{w.metric.label}</span>
-                </div>
+              <div className="work-archive-header">
+                <span className="work-archive-index">[ ARCHIVE NO. {w.index} ]</span>
+                <h3 className="work-editorial-title">
+                  {w.title} <span className="work-editorial-en">{w.en}</span>
+                </h3>
               </div>
-              
-              <div className="work-editorial-header">
-                <span className="work-editorial-num">{w.index}</span>
-                <div className="work-editorial-title-wrap">
-                  <h3 className="work-editorial-title">{w.title} <span className="work-editorial-en">{w.en}</span></h3>
-                  <div className="work-editorial-meta">
-                    <span className="work-tag-type">{w.type}</span>
-                    <span className="dot">·</span>
-                    <span>{w.role}</span>
-                    <span className="dot">·</span>
-                    <span>{w.year}</span>
-                  </div>
+
+              {/* High-density metadata spec table */}
+              <div className="work-spec-table">
+                <div className="work-spec-row">
+                  <span className="spec-label">ROLE / 角色</span>
+                  <span className="spec-value">{w.role}</span>
+                </div>
+                <div className="work-spec-row">
+                  <span className="spec-label">GENRE / 类型</span>
+                  <span className="spec-value">{w.type}</span>
+                </div>
+                <div className="work-spec-row">
+                  <span className="spec-label">IMPACT / 成果</span>
+                  <span className="spec-value">{w.metric.value} <span className="spec-value-sub">({w.metric.label})</span></span>
+                </div>
+                <div className="work-spec-row">
+                  <span className="spec-label">YEAR / 年份</span>
+                  <span className="spec-value">{w.year}</span>
                 </div>
               </div>
 
@@ -420,7 +445,10 @@ function Insight() {
       <div className="insight-head">
         <div className="insight-head-left">
           <p className="eyebrow"><Sparkles size={16} /> MY TAKE ON AI GAMEDEV</p>
-          <h2 className="section-title">我对 AI 游戏开发的理解</h2>
+          <div className="insight-title-bar">
+            <h2 className="section-title">我对 AI 游戏开发的理解</h2>
+            <div className="dot-matrix-patch" />
+          </div>
           <p className="insight-head-meta">Vibe Coding 的这一年，我把踩过的坑和想法整理成了下面三条。</p>
         </div>
         <div className="insight-head-right">
@@ -462,8 +490,13 @@ function About() {
       {/* 报纸杂志级：大网格分栏 */}
       <div className="about-bento-grid">
         <div className="about-bento-profile">
-          <p className="eyebrow"><Compass size={16} /> ABOUT ME</p>
-          <h2 className="section-title">关于我</h2>
+          <div className="about-head-title-bar">
+            <div>
+              <p className="eyebrow"><Compass size={16} /> ABOUT ME</p>
+              <h2 className="section-title">关于我</h2>
+            </div>
+            <div className="dot-matrix-patch" />
+          </div>
           {/* <p className="profile-text">
             我是数字媒体技术专业的学生。比起在简历上堆一串漂亮的形容词，我更愿意直接拿做出来的东西跟你聊——
             能在 TapTap 上线试玩的游戏、被几万人下载的 Mod、玩家自发用起来的社区，还有我自己运营的游戏内容号。
@@ -496,7 +529,11 @@ function About() {
         <div className="about-bento-skills">
           <h4 className="cloud-title">技能与工具集</h4>
           <div className="skill-cloud">
-            {skills.map((s) => <span className="skill-chip" key={s}>{s}</span>)}
+            {skills.map((s) => (
+              <span className={`skill-chip cat-${s.cat}`} key={s.name}>
+                {s.name}
+              </span>
+            ))}
           </div>
         </div>
 
@@ -550,24 +587,23 @@ function About() {
 function Contact() {
   return (
     <section id="contact" className="contact section-full">
-      <Aurora colors={['#818cf8', '#a78bfa', '#fbcfe8']} amplitude={0.9} />
-      <Decor variant="hero" />
+      <Aurora colors={['#e0e7ff', '#dbeafe', '#f1f5f9']} amplitude={0.9} />
       <div className="contact-inner page-shell">
-        <p className="eyebrow"><Send size={16} /> CONTACT</p>
+        <p className="eyebrow"><Send size={16} /> NEXT QUEST</p>
         <h2 className="contact-title">
           <SplitText text="想做点好玩的，一起？" />
         </h2>
         <p className="contact-sub"></p>
-        <a className="contact-mail" href={`mailto:${profile.email}`}>
-          <span className="contact-mail-label">EMAIL · 给我写信</span>
-          <span className="contact-mail-value">{profile.email} <ArrowUpRight size={22} /></span>
+        
+        <a className="contact-mail-link" href={`mailto:${profile.email}`}>
+          <span className="contact-mail-label">EMAIL // 给我写信</span>
+          <span className="contact-mail-address">{profile.email} <ArrowUpRight size={28} /></span>
         </a>
-        <div className="contact-strip">
-          <div className="contact-strip-item">
-            <span className="dot-live" /> 在找 实习
-          </div>
-          <div className="contact-strip-item">{profile.name} · {profile.alias}</div>
-          <div className="contact-strip-item">{profile.major}</div>
+
+        <div className="contact-hud-status">
+          <div className="status-item"><span className="status-dot green" /> 在找 实习</div>
+          <div className="status-item"><span className="status-dot blue" /> {profile.name} · {profile.alias}</div>
+          <div className="status-item"><span className="status-dot purple" /> {profile.major}</div>
         </div>
       </div>
       <footer className="footer">
