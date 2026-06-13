@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { createRoot } from 'react-dom/client'
 import { motion } from 'framer-motion'
-import { ArrowUpRight, Sparkles, ArrowDown, Compass, Palette, Gamepad2, Layers, Send, Play, Pause, Code, Rocket, Video } from 'lucide-react'
+import { ArrowUpRight, Sparkles, ArrowDown, Compass, Palette, Gamepad2, Layers, Send, Play, Pause, Volume2, VolumeX, Code, Rocket, Video } from 'lucide-react'
 import Aurora from './components/Aurora'
 import SplitText from './components/SplitText'
 import Decor from './components/Decor'
@@ -45,7 +45,7 @@ const works = [
     tags: ['玩法策划', '数值调试', '局内美术'],
     link: 'https://maker.taptap.cn/shares/nzlums',
     linkText: '点进去试玩',
-    media: { type: 'video', src: assetPath('/assets/mirage-wake.mp4') },
+    media: { type: 'video', src: assetPath('/assets/mirage-wake.mp4'), poster: assetPath('/works/huanhai.jpg') },
   },
   {
     index: '02',
@@ -236,22 +236,43 @@ function HeroAvatar() {
   )
 }
 
-function PhonePlayer({ src }) {
+function PhonePlayer({ src, poster }) {
   const videoRef = useRef(null)
   const [playing, setPlaying] = useState(false)
   const [started, setStarted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const [muted, setMuted] = useState(true)
 
-  function toggle() {
+  async function toggle() {
     const v = videoRef.current
     if (!v) return
     if (v.paused) {
-      v.play()
-      setPlaying(true)
-      setStarted(true)
+      setLoading(true)
+      try {
+        await v.play()
+        setPlaying(true)
+        setStarted(true)
+      } catch {
+        setPlaying(false)
+      } finally {
+        setLoading(false)
+      }
     } else {
       v.pause()
       setPlaying(false)
     }
+  }
+
+  function toggleMuted(event) {
+    event.stopPropagation()
+    setMuted((value) => !value)
+  }
+
+  function updateProgress() {
+    const v = videoRef.current
+    if (!v || !Number.isFinite(v.duration) || v.duration === 0) return
+    setProgress((v.currentTime / v.duration) * 100)
   }
 
   return (
@@ -261,18 +282,37 @@ function PhonePlayer({ src }) {
         ref={videoRef}
         className="phone-video"
         src={src}
+        poster={poster}
         playsInline
-        preload="metadata"
+        preload="none"
         loop
+        muted={muted}
+        onLoadStart={() => setLoading(true)}
+        onWaiting={() => setLoading(true)}
+        onCanPlay={() => setLoading(false)}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
+        onTimeUpdate={updateProgress}
+        onLoadedMetadata={updateProgress}
       />
+      <div className="phone-progress" aria-hidden="true">
+        <span style={{ width: `${progress}%` }} />
+      </div>
       <button
-        className={`phone-play-btn ${started ? 'has-started' : ''} ${playing ? 'is-playing' : ''}`}
+        className="phone-sound-btn"
+        aria-label={muted ? '打开声音' : '关闭声音'}
+        type="button"
+        onClick={toggleMuted}
+      >
+        {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+      </button>
+      <button
+        className={`phone-play-btn ${started ? 'has-started' : ''} ${playing ? 'is-playing' : ''} ${loading ? 'is-loading' : ''}`}
         aria-label={playing ? '暂停' : '播放'}
         type="button"
       >
-        {playing ? <Pause size={26} /> : <Play size={26} />}
+        <span className="phone-play-icon">{playing ? <Pause size={26} /> : <Play size={26} />}</span>
+        {loading && <span className="phone-loading-text">正在加载</span>}
       </button>
     </div>
   )
@@ -370,7 +410,7 @@ function Works() {
             <div className="work-editorial-media">
               {w.media && w.media.type === 'video' ? (
                 <div className="work-phone-stage">
-                  <PhonePlayer src={w.media.src} />
+                  <PhonePlayer src={w.media.src} poster={w.media.poster} />
                 </div>
               ) : (
                 <div className="browser-mockup">
