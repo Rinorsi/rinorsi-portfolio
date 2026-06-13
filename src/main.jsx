@@ -17,7 +17,9 @@ const profile = {
   motifs: ['游戏玩家', 'Vibe Coding', '做过能上线的东西', '会剪视频做内容'],
 }
 
-const orbWords = ['Vibe Coding', '玩法策划', 'TapTap Maker', 'Mod', '数据站', '内容']
+const assetPath = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`
+
+const orbWords = ['Vibe Coding', '数据构建', 'TapTap Maker', 'Mod', '数据站', '内容']
 
 const stats = [
   { value: '300万+', label: '内容总播放' },
@@ -30,7 +32,7 @@ const works = [
   {
     index: '01',
     title: '幻海航迹',
-    en: 'Mirage Wake',
+    // en: 'Mirage Wake',
     type: 'TapTap Maker · 3D 涂色竞技',
     role: '策划 / 美术 / 玩法调试',
     year: '2026',
@@ -43,12 +45,12 @@ const works = [
     tags: ['玩法策划', '数值调试', '局内美术'],
     link: 'https://maker.taptap.cn/shares/nzlums',
     linkText: '点进去试玩',
-    media: { type: 'video', src: '/assets/mirage-wake.mp4' },
+    media: { type: 'video', src: assetPath('/assets/mirage-wake.mp4') },
   },
   {
     index: '02',
     title: '绝尘营地',
-    en: 'Drift Camp',
+    // en: 'Drift Camp',
     type: '《绝尘漂移》玩家涂装分享社区',
     role: '一个人从零搭起来',
     year: '2025',
@@ -61,12 +63,12 @@ const works = [
     tags: ['独立开发', '页面设计', '编辑精选奖'],
     link: 'https://hot.seimu.cn/',
     linkText: '看看社区',
-    media: { type: 'image', src: '/assets/drift-camp.png' },
+    media: { type: 'image', src: assetPath('/assets/drift-camp.png') },
   },
   {
     index: '03',
     title: '王牌竞速 Wiki',
-    en: 'Ace Racing Data',
+    // en: 'Ace Racing Data',
     type: '《王牌竞速》数据查询站 + 内容账号',
     role: '项目负责人',
     year: '2024',
@@ -79,12 +81,12 @@ const works = [
     tags: ['项目主导', '数据整理', '内容运营'],
     link: 'https://reca.seimu.cn/',
     linkText: '看看数据站',
-    media: { type: 'image', src: '/assets/reca.png' },
+    media: { type: 'image', src: assetPath('/assets/reca.png') },
   },
   {
     index: '04',
     title: 'CAD Editor',
-    en: 'Minecraft Mod',
+    // en: 'Minecraft Mod',
     type: 'Minecraft 辅助创作 Mod',
     role: '独立开发',
     year: '2025',
@@ -97,7 +99,7 @@ const works = [
     tags: ['工具开发', '听玩家需求', '多语言'],
     link: 'https://modrinth.com/project/cad-editor/',
     linkText: '看看平台',
-    media: { type: 'image', src: '/assets/cad-editor.png' },
+    media: { type: 'image', src: assetPath('/assets/cad-editor.png') },
   },
 ]
 
@@ -200,7 +202,7 @@ function HeroAvatar() {
 
         {/* Avatar squircle stage */}
         <div className="hero-avatar-squircle">
-          <img className="hero-avatar-img" src="/assets/avatar.jpg" alt="云诺羲 Rinorsi" />
+          <img className="hero-avatar-img" src={assetPath('/assets/avatar.jpg')} alt="云诺羲 Rinorsi" />
           <div className="avatar-scanline" />
         </div>
       </div>
