@@ -5,6 +5,8 @@ import { ArrowUpRight, Sparkles, ArrowDown, Compass, Palette, Gamepad2, Layers, 
 import Aurora from './components/Aurora'
 import SplitText from './components/SplitText'
 import Decor from './components/Decor'
+import BootLoader from './components/BootLoader'
+import { DoodleScatter, DoodleDivider } from './components/Doodle'
 import './styles.css'
 
 const profile = {
@@ -39,13 +41,13 @@ const works = [
     shot: '游戏内画面',
     hook: '全部由AI制作的涂色竞技游戏。',
     start: '有一天，我在 Maker 看到支持 Tripo 生成模型，于是一次对3D游戏的大胆尝试开始了……',
-    solve: '核心改成「船尾留下彩色航迹」，让移动本身变成抢地盘，再围绕三种打法填充内容，一个涂色竞技游戏就这么诞生了。',
+    solve: '核心是「船尾留下彩色航迹」，让移动本身变成抢地盘，再围绕三种打法填充内容，一个涂色竞技游戏就这么诞生了。',
     result: '现在还在打磨，能直接点进去试玩。',
     metric: { value: 'TapTap 制造', label: 'AI 工具创作' },
     tags: ['玩法策划', '数值调试', '局内美术'],
     link: 'https://maker.taptap.cn/shares/nzlums',
     linkText: '点进去试玩',
-    media: { type: 'video', src: assetPath('/assets/mirage-wake.mp4'), poster: assetPath('/works/huanhai.jpg') },
+    media: { type: 'video', src: assetPath('/assets/mirage-wake.mp4'), poster: assetPath('/works/mirage-poster.png') },
   },
   {
     index: '02',
@@ -111,16 +113,8 @@ const abilities = [
 ]
 
 const skills = [
-  { name: 'TapTap Maker', cat: 'gamedev' },
-  { name: '玩法策划', cat: 'gamedev' },
-  { name: '数值调试', cat: 'gamedev' },
-  { name: 'Vibe Coding', cat: 'ai' },
-  { name: 'Cursor', cat: 'ai' },
-  { name: 'ChatGPT / Gemini', cat: 'ai' },
-  { name: 'Mod 开发', cat: 'tech' },
-  { name: '数据站搭建', cat: 'tech' },
-  { name: '社区运营', cat: 'ops' },
-  { name: '视频剪辑', cat: 'ops' },
+  'TapTap Maker', 'Vibe Coding', 'Cursor', 'ChatGPT / Gemini',
+  '数值调试', 'Mod 开发', '数据站搭建', '社区运营', '视频剪辑',
 ]
 
 const navItems = [
@@ -162,24 +156,41 @@ const navIcons = {
 
 function Nav({ activeSection = 'hero' }) {
   return (
-    <nav className="rail-nav" aria-label="导航">
-      <a className="rail-brand" href="#hero" aria-label={profile.alias}>{profile.alias}</a>
-      <div className="rail-dots">
-        {navItems.map((n) => (
-          <a
-            className={`rail-dot ${activeSection === n.id ? 'active' : ''}`}
-            href={`#${n.id}`}
-            key={n.id}
-          >
-            <span className="rail-dot-mark" />
-            <span className="rail-dot-label">{n.label}</span>
-          </a>
-        ))}
-      </div>
-      <a className="rail-cta" href={`mailto:${profile.email}`} aria-label="写信联系">
-        <ArrowUpRight size={16} />
-      </a>
-    </nav>
+    <>
+      <nav className="rail-nav" aria-label="导航">
+        <a className="rail-brand" href="#hero" aria-label={profile.alias}>{profile.alias}</a>
+        <div className="rail-dots">
+          {navItems.map((n) => (
+            <a
+              className={`rail-dot ${activeSection === n.id ? 'active' : ''}`}
+              href={`#${n.id}`}
+              key={n.id}
+            >
+              <span className="rail-dot-mark" />
+              <span className="rail-dot-label">{n.label}</span>
+            </a>
+          ))}
+        </div>
+        <a className="rail-cta" href={`mailto:${profile.email}`} aria-label="写信联系">
+          <ArrowUpRight size={16} />
+        </a>
+      </nav>
+      <nav className="mobile-nav" aria-label="移动端导航">
+        {navItems.map((n) => {
+          const Icon = navIcons[n.id]
+          return (
+            <a
+              className={`mobile-nav-link ${activeSection === n.id ? 'active' : ''}`}
+              href={`#${n.id}`}
+              key={n.id}
+            >
+              <Icon size={13} />
+              <span>{n.label}</span>
+            </a>
+          )
+        })}
+      </nav>
+    </>
   )
 }
 
@@ -191,31 +202,21 @@ function HeroAvatar() {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
     >
-      {/* Dynamic backdrop glows */}
+      {/* 喷漆光晕底 */}
       <div className="avatar-glow-blob" />
       <div className="avatar-glow-blob-secondary" />
 
-      {/* Outer target bracket layout */}
-      <div className="avatar-hud-frame">
-        {/* Corner Brackets */}
-        <span className="hud-bracket top-left" />
-        <span className="hud-bracket top-right" />
-        <span className="hud-bracket bottom-left" />
-        <span className="hud-bracket bottom-right" />
-
-        {/* Small UI indicator lines */}
-        <div className="hud-line-horizontal" />
-        <span className="hud-system-status">SYS.ACTIVE // OPR.2026</span>
-        <span className="hud-system-mode">MODE: PLANNER</span>
-
-        {/* Avatar squircle stage */}
+      {/* 手绘涂鸦相框 */}
+      <div className="avatar-doodle-frame">
+        <span className="corner-sticker tone-pink avatar-sticker">HELLO!</span>
         <div className="hero-avatar-squircle">
           <img className="hero-avatar-img" src={assetPath('/assets/avatar.jpg')} alt="云诺羲 Rinorsi" />
-          <div className="avatar-scanline" />
         </div>
+        <span className="avatar-doodle-star avatar-doodle-star-1">✦</span>
+        <span className="avatar-doodle-star avatar-doodle-star-2">✕</span>
       </div>
 
-      {/* Floating horizontal tags (Upright and clean) */}
+      {/* 漂浮手绘标签 */}
       <div className="floating-chip chip-1">
         <span className="chip-dot pink" />
         <span>TapTap Maker</span>
@@ -236,12 +237,15 @@ function HeroAvatar() {
   )
 }
 
-function PhonePlayer({ src, poster }) {
+function PhonePlayer({ src, poster, onPreview }) {
   const videoRef = useRef(null)
   const [playing, setPlaying] = useState(false)
   const [started, setStarted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [progress, setProgress] = useState(0)
+  const [buffered, setBuffered] = useState(0)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
   const [muted, setMuted] = useState(true)
 
   async function toggle() {
@@ -269,15 +273,53 @@ function PhonePlayer({ src, poster }) {
     setMuted((value) => !value)
   }
 
+  function openPreview(event) {
+    event.stopPropagation()
+    const v = videoRef.current
+    onPreview?.({
+      currentTime: v?.currentTime || 0,
+      playing,
+      muted,
+    })
+  }
+
   function updateProgress() {
     const v = videoRef.current
     if (!v || !Number.isFinite(v.duration) || v.duration === 0) return
+    setCurrentTime(v.currentTime)
+    setDuration(v.duration)
     setProgress((v.currentTime / v.duration) * 100)
+    updateBuffered()
+  }
+
+  function updateBuffered() {
+    const v = videoRef.current
+    if (!v || !Number.isFinite(v.duration) || v.duration === 0 || v.buffered.length === 0) return
+    const lastRange = v.buffered.length - 1
+    setDuration(v.duration)
+    setBuffered(Math.min(100, (v.buffered.end(lastRange) / v.duration) * 100))
+  }
+
+  function seek(event) {
+    event.stopPropagation()
+    const v = videoRef.current
+    const nextProgress = Number(event.target.value)
+    setProgress(nextProgress)
+    if (!v || !Number.isFinite(v.duration) || v.duration === 0) return
+    const nextTime = (nextProgress / 100) * v.duration
+    v.currentTime = nextTime
+    setCurrentTime(nextTime)
+  }
+
+  function formatTime(seconds) {
+    if (!Number.isFinite(seconds) || seconds <= 0) return '0:00'
+    const mins = Math.floor(seconds / 60)
+    const secs = Math.floor(seconds % 60).toString().padStart(2, '0')
+    return `${mins}:${secs}`
   }
 
   return (
-    <div className="phone-frame" onClick={toggle}>
-      <span className="phone-notch" />
+    <div className={`phone-frame ${playing ? 'is-playing' : ''}`} onClick={toggle}>
       <video
         ref={videoRef}
         className="phone-video"
@@ -287,16 +329,39 @@ function PhonePlayer({ src, poster }) {
         preload="none"
         loop
         muted={muted}
-        onLoadStart={() => setLoading(true)}
-        onWaiting={() => setLoading(true)}
-        onCanPlay={() => setLoading(false)}
+        onLoadStart={() => {
+          if (started) setLoading(true)
+        }}
+        onWaiting={() => {
+          if (started) setLoading(true)
+        }}
+        onCanPlay={() => {
+          updateBuffered()
+          setLoading(false)
+        }}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
+        onProgress={updateBuffered}
         onTimeUpdate={updateProgress}
         onLoadedMetadata={updateProgress}
       />
-      <div className="phone-progress" aria-hidden="true">
-        <span style={{ width: `${progress}%` }} />
+      <div className="phone-controls" onClick={(event) => event.stopPropagation()}>
+        <div className="phone-time-row">
+          <span>{formatTime(currentTime)}</span>
+          <span>{formatTime(duration)}</span>
+        </div>
+        <input
+          className="phone-progress"
+          type="range"
+          min="0"
+          max="100"
+          step="0.1"
+          value={progress}
+          aria-label="视频播放进度"
+          style={{ '--progress': `${progress}%` }}
+          onChange={seek}
+          onInput={seek}
+        />
       </div>
       <button
         className="phone-sound-btn"
@@ -312,9 +377,153 @@ function PhonePlayer({ src, poster }) {
         type="button"
       >
         <span className="phone-play-icon">{playing ? <Pause size={26} /> : <Play size={26} />}</span>
-        {loading && <span className="phone-loading-text">正在加载</span>}
+        {!started && !loading && <span className="phone-loading-text">点击加载播放</span>}
+        {loading && (
+          <span className="phone-loading-panel">
+            <span className="phone-loading-text">正在加载 {Math.round(buffered)}%</span>
+            <span className="phone-loading-meter" style={{ '--buffered': `${buffered}%` }} />
+          </span>
+        )}
+      </button>
+      <button
+        className="media-zoom-btn phone-zoom-btn"
+        aria-label="放大预览视频"
+        type="button"
+        onClick={openPreview}
+      >
+        放大
       </button>
     </div>
+  )
+}
+
+function MediaPreview({ item, onClose }) {
+  const videoRef = useRef(null)
+  const [imageZoomed, setImageZoomed] = useState(false)
+  const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 })
+  const dragRef = useRef(null)
+
+  useEffect(() => {
+    if (!item) return undefined
+    setImageZoomed(false)
+    setImageOffset({ x: 0, y: 0 })
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [item, onClose])
+
+  useEffect(() => {
+    if (!item || item.type !== 'video' || !videoRef.current) return
+    const v = videoRef.current
+    const syncTime = () => {
+      if (Number.isFinite(item.currentTime) && item.currentTime > 0) {
+        v.currentTime = item.currentTime
+      }
+      if (item.playing) {
+        v.play().catch(() => {})
+      }
+    }
+    if (v.readyState >= 1) syncTime()
+    else v.addEventListener('loadedmetadata', syncTime, { once: true })
+    return () => v.removeEventListener('loadedmetadata', syncTime)
+  }, [item])
+
+  if (!item) return null
+
+  function toggleImageZoom(event) {
+    event.stopPropagation()
+    if (dragRef.current?.moved) {
+      dragRef.current = null
+      return
+    }
+    setImageZoomed((value) => !value)
+    setImageOffset({ x: 0, y: 0 })
+  }
+
+  function startImageDrag(event) {
+    if (!imageZoomed) return
+    event.preventDefault()
+    dragRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      baseX: imageOffset.x,
+      baseY: imageOffset.y,
+      moved: false,
+    }
+    event.currentTarget.setPointerCapture(event.pointerId)
+  }
+
+  function dragImage(event) {
+    const drag = dragRef.current
+    if (!drag || drag.pointerId !== event.pointerId) return
+    if (Math.abs(event.clientX - drag.startX) > 4 || Math.abs(event.clientY - drag.startY) > 4) {
+      drag.moved = true
+    }
+    setImageOffset({
+      x: drag.baseX + event.clientX - drag.startX,
+      y: drag.baseY + event.clientY - drag.startY,
+    })
+  }
+
+  function stopImageDrag(event) {
+    if (dragRef.current?.pointerId === event.pointerId) {
+      event.currentTarget.releasePointerCapture(event.pointerId)
+    }
+  }
+
+  return (
+    <motion.div
+      className="media-preview"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${item.title} 放大预览`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      <motion.div
+        className={`media-preview-card ${item.type === 'video' ? 'is-video' : 'is-image'}`}
+        initial={{ scale: 0.94, y: 18 }}
+        animate={{ scale: 1, y: 0 }}
+        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="media-preview-head">
+          <span>[ PREVIEW ] {item.title}</span>
+          {item.type === 'image' && <span className="media-preview-tip">{imageZoomed ? '拖动查看 · 点击还原' : '点击图片局部放大'}</span>}
+          <button type="button" onClick={onClose} aria-label="关闭预览">关闭</button>
+        </div>
+        <div className="media-preview-body">
+          {item.type === 'video' ? (
+            <video ref={videoRef} src={item.src} poster={item.poster} controls playsInline muted={item.muted} />
+          ) : (
+            <button
+              className={`media-preview-image-stage ${imageZoomed ? 'is-zoomed' : ''}`}
+              type="button"
+              onClick={toggleImageZoom}
+              onPointerDown={startImageDrag}
+              onPointerMove={dragImage}
+              onPointerUp={stopImageDrag}
+              onPointerCancel={stopImageDrag}
+              aria-label={imageZoomed ? '恢复图片尺寸' : '放大图片局部'}
+            >
+              <img
+                src={item.src}
+                alt={item.title}
+                draggable="false"
+                style={{
+                  transform: `translate(${imageOffset.x}px, ${imageOffset.y}px) scale(${imageZoomed ? 1.35 : 1})`,
+                }}
+              />
+            </button>
+          )}
+        </div>
+      </motion.div>
+    </motion.div>
   )
 }
 
@@ -325,13 +534,14 @@ function Hero() {
       <div className="hero-tint" aria-hidden="true" />
       <Aurora colors={['#3b82f6', '#818cf8', '#dbeafe', '#fafaf9']} amplitude={1.1} />
       <Decor variant="hero" />
+      <DoodleScatter variant="hero" />
       <div className="hero-inner page-shell">
+        <div className="hero-topline" aria-hidden="true">
+          <span>PORTFOLIO 2026</span>
+          <span>AI GAME CREATION</span>
+          <span>PLAYABLE IDEAS</span>
+        </div>
         <div className="hero-copy">
-          <div className="status-badge">
-            <span className="status-dot" />
-            {/* <span>2027届毕业生</span> */}
-          </div>
-
           <h1 className="hero-title" style={{ minHeight: '136px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <SplitText text="你好，我是" tag="span" className="hero-hi" />
             <span
@@ -360,10 +570,10 @@ function Hero() {
           </div>
 
           <div className="hero-stickers">
-            <div className="sticker-tag tag-game"><span className="tag-index">01</span> 游戏玩家</div>
-            <div className="sticker-tag tag-code"><span className="tag-index">02</span> Vibe Coding</div>
-            <div className="sticker-tag tag-ship"><span className="tag-index">03</span> 做过能上线的东西</div>
-            <div className="sticker-tag tag-video"><span className="tag-index">04</span> 会剪视频做内容</div>
+            <div className="sticker-tag tag-game"><Gamepad2 size={14} /> 游戏玩家</div>
+            <div className="sticker-tag tag-code"><Code size={14} /> Vibe Coding</div>
+            <div className="sticker-tag tag-ship"><Rocket size={14} /> 做过能上线的东西</div>
+            <div className="sticker-tag tag-video"><Video size={14} /> 会剪视频做内容</div>
           </div>
 
           <div className="hero-actions">
@@ -379,25 +589,23 @@ function Hero() {
   )
 }
 
-function Works() {
+function Works({ onPreview }) {
   return (
     <section id="works" className="works">
       <Decor variant="works" />
+      <DoodleScatter variant="works" />
       <div className="works-head page-shell">
-        <div className="works-head-title-bar">
-          <div>
-            <p className="eyebrow"><Compass size={16} /> FEATURED WORKS</p>
-            <h2 className="section-title">我做过的东西</h2>
-          </div>
-          <div className="dot-matrix-patch" />
-        </div>
+        <p className="eyebrow"><Compass size={16} /> FEATURED WORKS</p>
+        <h2 className="section-title">我做过的东西</h2>
         <p className="works-sub">用作品说话：每一次动手，都是为了解决一个真实的体验痛点。</p>
       </div>
+      <div className="page-shell"><DoodleDivider tone="yellow" /></div>
       
       <div className="works-editorial-list page-shell">
-        {works.map((w) => (
+        {works.map((w, wi) => (
+          <React.Fragment key={w.title}>
+            {wi > 0 && <DoodleDivider tone={wi % 2 ? 'cyan' : 'pink'} flip={wi % 2 === 0} />}
           <motion.article
-            key={w.title}
             className={`work-editorial-row ${w.media && w.media.type === 'video' ? 'is-portrait' : ''}`}
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -408,12 +616,24 @@ function Works() {
             <div className="work-row-watermark" aria-hidden="true">{w.index}</div>
             {/* 左侧：媒体展示框 (实机视频/浏览器 Mockup) */}
             <div className="work-editorial-media">
+              <span className={`corner-sticker work-sticker tone-${['pink', 'cyan', 'yellow', 'cyan'][Number(w.index) - 1] || 'pink'}`}>
+                ARCHIVE · {w.year}
+              </span>
               {w.media && w.media.type === 'video' ? (
                 <div className="work-phone-stage">
-                  <PhonePlayer src={w.media.src} poster={w.media.poster} />
+                  <PhonePlayer
+                    src={w.media.src}
+                    poster={w.media.poster}
+                    onPreview={(state) => onPreview({ ...w.media, ...state, title: w.title })}
+                  />
                 </div>
               ) : (
-                <div className="browser-mockup">
+                <button
+                  className="browser-mockup media-preview-trigger"
+                  type="button"
+                  aria-label={`放大预览 ${w.title}`}
+                  onClick={() => onPreview({ ...w.media, title: w.title })}
+                >
                   <div className="browser-bar">
                     <span className="browser-dot close" />
                     <span className="browser-dot minimize" />
@@ -422,8 +642,9 @@ function Works() {
                   </div>
                   <div className="browser-content">
                     <img className="browser-image" src={w.media.src} alt={w.title} loading="lazy" />
+                    <span className="media-zoom-btn">放大</span>
                   </div>
-                </div>
+                </button>
               )}
             </div>
 
@@ -472,6 +693,7 @@ function Works() {
               </div>
             </div>
           </motion.article>
+          </React.Fragment>
         ))}
       </div>
     </section>
@@ -482,13 +704,11 @@ function Insight() {
   return (
     <section id="insight" className="insight page-shell section-pad">
       <Decor variant="soft" />
+      <DoodleScatter variant="insight" />
       <div className="insight-head">
         <div className="insight-head-left">
           <p className="eyebrow"><Sparkles size={16} /> MY TAKE ON AI GAMEDEV</p>
-          <div className="insight-title-bar">
-            <h2 className="section-title">我对 AI 游戏开发的理解</h2>
-            <div className="dot-matrix-patch" />
-          </div>
+          <h2 className="section-title">我对 AI 游戏开发的理解</h2>
           <p className="insight-head-meta">Vibe Coding 的这一年，我把踩过的坑和想法整理成了下面三条。</p>
         </div>
         <div className="insight-head-right">
@@ -526,17 +746,13 @@ function About() {
   return (
     <section id="about" className="about page-shell section-pad">
       <Decor variant="soft" />
+      <DoodleScatter variant="about" />
       
       {/* 报纸杂志级：大网格分栏 */}
       <div className="about-bento-grid">
         <div className="about-bento-profile">
-          <div className="about-head-title-bar">
-            <div>
-              <p className="eyebrow"><Compass size={16} /> ABOUT ME</p>
-              <h2 className="section-title">关于我</h2>
-            </div>
-            <div className="dot-matrix-patch" />
-          </div>
+          <p className="eyebrow"><Compass size={16} /> ABOUT ME</p>
+          <h2 className="section-title">关于我</h2>
           {/* <p className="profile-text">
             我是数字媒体技术专业的学生。比起在简历上堆一串漂亮的形容词，我更愿意直接拿做出来的东西跟你聊——
             能在 TapTap 上线试玩的游戏、被几万人下载的 Mod、玩家自发用起来的社区，还有我自己运营的游戏内容号。
@@ -569,11 +785,7 @@ function About() {
         <div className="about-bento-skills">
           <h4 className="cloud-title">技能与工具集</h4>
           <div className="skill-cloud">
-            {skills.map((s) => (
-              <span className={`skill-chip cat-${s.cat}`} key={s.name}>
-                {s.name}
-              </span>
-            ))}
+            {skills.map((s) => <span className="skill-chip" key={s}>{s}</span>)}
           </div>
         </div>
 
@@ -628,6 +840,7 @@ function Contact() {
   return (
     <section id="contact" className="contact section-full">
       <Aurora colors={['#e0e7ff', '#dbeafe', '#f1f5f9']} amplitude={0.9} />
+      <DoodleScatter variant="contact" />
       <div className="contact-inner page-shell">
         <p className="eyebrow"><Send size={16} /> NEXT QUEST</p>
         <h2 className="contact-title">
@@ -656,6 +869,8 @@ function Contact() {
 
 function App() {
   const [activeSection, setActiveSection] = useState('hero')
+  const [booting, setBooting] = useState(true)
+  const [mediaPreview, setMediaPreview] = useState(null)
 
   useEffect(() => {
     const sections = ['hero', 'works', 'insight', 'about', 'contact']
@@ -688,13 +903,21 @@ function App() {
 
   return (
     <main>
+      {booting && <BootLoader onFinish={() => setBooting(false)} />}
+      <div className="ambient-base" aria-hidden="true">
+        <div className="ambient-grid" />
+        <span className="ambient-spray ambient-spray-a" />
+        <span className="ambient-spray ambient-spray-b" />
+        <span className="ambient-spray ambient-spray-c" />
+      </div>
       <div className="noise-overlay" aria-hidden="true" />
       <Nav activeSection={activeSection} />
       <Hero />
-      <Works />
+      <Works onPreview={setMediaPreview} />
       <Insight />
       <About />
       <Contact />
+      <MediaPreview item={mediaPreview} onClose={() => setMediaPreview(null)} />
     </main>
   )
 }
