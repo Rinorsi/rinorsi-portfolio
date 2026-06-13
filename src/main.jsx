@@ -13,7 +13,7 @@ const profile = {
   name: '云诺羲',
   alias: 'Rinorsi',
   role: 'AI 游戏创作实习 · 在找',
-  status: '寻找 AI 游戏创作 / 游戏策划实习',
+  status: 'AI 游戏创作',
   email: 'Rinorsi@163.com',
   major: '数字媒体技术',
   motifs: ['游戏玩家', 'Vibe Coding', '做过能上线的东西', '会剪视频做内容'],
@@ -120,7 +120,6 @@ const skills = [
 const navItems = [
   { id: 'hero', label: '首页' },
   { id: 'works', label: '作品' },
-  { id: 'insight', label: '认知' },
   { id: 'about', label: '关于我' },
   { id: 'contact', label: '联系' },
 ]
@@ -807,31 +806,6 @@ function About() {
         </div>
       </div>
 
-      {/* 四大能力排版：去掉卡片，改用 2x2 线框大图纸格栅布局 */}
-      <div className="ability-editorial-box">
-        <div className="ability-box-header">
-          <span>核心能力维度</span>
-          <span>ESTABLISHED 2026</span>
-        </div>
-        <div className="ability-grid-layout">
-          {abilities.map(({ icon: Icon, en, title, text }, i) => (
-            <motion.div
-              key={title} className="ability-grid-cell"
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.19, 1, 0.22, 1] }}
-            >
-              <div className="ability-cell-top">
-                <div className="ability-icon-wrap"><Icon size={18} /></div>
-                <span className="ability-en-label">{en}</span>
-              </div>
-              <h3 className="ability-cell-title">{title}</h3>
-              <p className="ability-cell-text">{text}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
     </section>
   )
 }
@@ -873,7 +847,7 @@ function App() {
   const [mediaPreview, setMediaPreview] = useState(null)
 
   useEffect(() => {
-    const sections = ['hero', 'works', 'insight', 'about', 'contact']
+    const sections = ['hero', 'works', 'about', 'contact']
     const observerOptions = {
       root: null,
       rootMargin: '-30% 0px -30% 0px',
@@ -914,7 +888,6 @@ function App() {
       <Nav activeSection={activeSection} />
       <Hero />
       <Works onPreview={setMediaPreview} />
-      <Insight />
       <About />
       <Contact />
       <MediaPreview item={mediaPreview} onClose={() => setMediaPreview(null)} />
