@@ -47,7 +47,7 @@ const works = [
     tags: ['玩法策划', '数值调试', '局内美术'],
     link: 'https://maker.taptap.cn/shares/nzlums',
     linkText: '点进去试玩',
-    media: { type: 'video', src: assetPath('/assets/mirage-wake.mp4'), poster: assetPath('/works/mirage-poster.png') },
+    media: { type: 'video', src: assetPath('/assets/mirage-wake.mp4'), poster: assetPath('/works/mirage-poster.webp') },
   },
   {
     index: '02',
@@ -65,7 +65,7 @@ const works = [
     tags: ['独立开发', '页面设计', '编辑精选奖'],
     link: 'https://hot.seimu.cn/',
     linkText: '看看社区',
-    media: { type: 'image', src: assetPath('/assets/drift-camp.png') },
+    media: { type: 'image', src: assetPath('/assets/drift-camp.webp') },
   },
   {
     index: '03',
@@ -83,7 +83,7 @@ const works = [
     tags: ['项目主导', '数据整理', '内容运营'],
     link: 'https://reca.seimu.cn/',
     linkText: '看看数据站',
-    media: { type: 'image', src: assetPath('/assets/reca.png') },
+    media: { type: 'image', src: assetPath('/assets/reca.webp') },
   },
   {
     index: '04',
@@ -101,7 +101,7 @@ const works = [
     tags: ['工具开发', '听玩家需求', '多语言'],
     link: 'https://modrinth.com/project/cad-editor/',
     linkText: '看看平台',
-    media: { type: 'image', src: assetPath('/assets/cad-editor.png') },
+    media: { type: 'image', src: assetPath('/assets/cad-editor.webp') },
   },
 ]
 
@@ -209,7 +209,7 @@ function HeroAvatar() {
       <div className="avatar-doodle-frame">
         <span className="corner-sticker tone-pink avatar-sticker">HELLO!</span>
         <div className="hero-avatar-squircle">
-          <img className="hero-avatar-img" src={assetPath('/assets/avatar.jpg')} alt="云诺羲 Rinorsi" />
+          <img className="hero-avatar-img" src={assetPath('/assets/avatar.webp')} alt="云诺羲 Rinorsi" />
         </div>
         <span className="avatar-doodle-star avatar-doodle-star-1">✦</span>
         <span className="avatar-doodle-star avatar-doodle-star-2">✕</span>

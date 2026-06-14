@@ -2,6 +2,7 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
+    "optimize:media": "node scripts/optimize-media.mjs",
     "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
@@ -12,5 +13,10 @@
     "react": "latest",
     "react-dom": "latest",
     "vite": "^5.4.14"
+  },
+  "devDependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "ffprobe-static": "^3.1.0",
+    "sharp": "^0.35.1"
   }
 }
