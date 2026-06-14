@@ -47,7 +47,7 @@ const works = [
     tags: ['玩法策划', '数值调试', '局内美术'],
     link: 'https://maker.taptap.cn/shares/nzlums',
     linkText: '点进去试玩',
-    media: { type: 'video', src: assetPath('/assets/mirage-wake.mp4'), poster: assetPath('/works/mirage-poster.webp') },
+    media: { type: 'video', src: assetPath('/assets/mirage-wake-full.mp4'), poster: assetPath('/works/mirage-poster.webp') },
   },
   {
     index: '02',
@@ -325,7 +325,7 @@ function PhonePlayer({ src, poster, onPreview }) {
         src={src}
         poster={poster}
         playsInline
-        preload="none"
+        preload="metadata"
         loop
         muted={muted}
         onLoadStart={() => {

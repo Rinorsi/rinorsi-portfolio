@@ -26,13 +26,14 @@ async function optimizeImage([input, output, options]) {
 }
 
 async function optimizeVideo() {
-  const input = path.join(root, 'public/assets/mirage-wake.mp4')
+  const input = path.join(root, 'public/assets/mirage-wake-full.mp4')
+  const fallbackInput = input
   const source = path.join(root, '.media-source/mirage-wake.source.mp4')
   const temp = `${input}.tmp.mp4`
 
   await fs.mkdir(path.dirname(source), { recursive: true })
   try {
-    await fs.copyFile(input, source, fs.constants.COPYFILE_EXCL)
+    await fs.copyFile(fallbackInput, source, fs.constants.COPYFILE_EXCL)
   } catch (error) {
     if (error.code !== 'EEXIST') throw error
   }
